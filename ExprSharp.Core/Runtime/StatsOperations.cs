@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ExprSharp.Core.Exprs
+using number = ExprSharp.RealNumber;
+
+namespace ExprSharp.Runtime
 {
     public static class StatsOperations
     {
-        internal static List<double> GetAll(IExpr[] args, EvalContext context)
+        internal static List<number> GetAll(IExpr[] args, EvalContext context)
         {
             List<IExpr> ls = new List<IExpr>();
 
@@ -27,7 +29,7 @@ namespace ExprSharp.Core.Exprs
                         break;
                 }
             }
-            return new List<double>(ls.Select(x=>OperationHelper.GetValue<double>(x)));
+            return new List<number>(ls.Select(x=>context.GetValue<number>(x)));
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace ExprSharp.Core.Exprs
                 var vs = GetAll(args, cal);
                 //var vs = OperationHelper.GetConcreteValue<double>(args);
 
-                return new ConcreteValue(vs.AsParallel().WithCancellation(cal.CancelToken.Token).Max());
+                return new ConcreteValue(new number(vs.AsParallel().WithCancellation(cal.CancelToken.Token).Max()));
             }
             );
 
@@ -74,7 +76,7 @@ namespace ExprSharp.Core.Exprs
                 var vs = GetAll(args, cal);
                 //var vs = OperationHelper.GetConcreteValue<double>(args);
 
-                return new ConcreteValue(vs.AsParallel().WithCancellation(cal.CancelToken.Token).Sum());
+                return new ConcreteValue(vs.AsParallel().WithCancellation(cal.CancelToken.Token).Sum(x=>x));
 
             }
             );
@@ -93,7 +95,7 @@ namespace ExprSharp.Core.Exprs
                 var vs = GetAll(args, cal);
                 //var vs = OperationHelper.GetConcreteValue<double>(args);
 
-                return new ConcreteValue(vs.AsParallel().WithCancellation(cal.CancelToken.Token).Average());
+                return new ConcreteValue(vs.AsParallel().WithCancellation(cal.CancelToken.Token).Average(x=>x));
 
             }
             );

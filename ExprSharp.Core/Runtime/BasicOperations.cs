@@ -8,7 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace ExprSharp.Core.Exprs
+namespace ExprSharp.Runtime
 {
     public static class BasicOperations
     {
@@ -21,8 +21,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] + ov[1]);
+                var ov = cal.GetValue<IAdditive>(args);
+                return new ConcreteValue( ov[0].Add(ov[1]));
             },
             null,
             (double)Priority.Midium,
@@ -38,8 +38,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] - ov[1]);
+                var ov = cal.GetValue<ISubtractive>(args);
+                return new ConcreteValue(ov[0].Subtract(ov[1]));
             },
             (IExpr[] args) =>
             {
@@ -58,8 +58,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] * ov[1]);
+                var ov = cal.GetValue<IMultiplicable>(args);
+                return new ConcreteValue(ov[0].Multiply(ov[1]));
             },
             null,
             (double)Priority.MIDIUM,
@@ -75,8 +75,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] / ov[1]);
+                var ov = cal.GetValue<IDivisible>(args);
+                return new ConcreteValue(ov[0].Divide(ov[1]));
             },
             null,
             (double)Priority.MIDIUM,
@@ -92,8 +92,8 @@ namespace ExprSharp.Core.Exprs
            {
                OperationHelper.AssertArgsNumberThrowIf(2, args);
                OperationHelper.AssertCertainValueThrowIf(args);
-               var ov = OperationHelper.GetValue<double>(args);
-               return new ConcreteValue(ov[0] % ov[1]);
+               var ov = cal.GetValue<IMouldable>(args);
+               return new ConcreteValue(ov[0].Mod(ov[1]));
            },
            null,
            (double)Priority.MIDIUM,
@@ -109,8 +109,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(System.Math.Pow(ov[0], ov[1]));
+                var ov = cal.GetValue<IPowerable>(args);
+                return new ConcreteValue(ov[0].Pow(ov[1]));
             },
             null,
             (double)Priority.high,
@@ -128,8 +128,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] == ov[1]);
+                var ov = cal.GetValue<object>(args);
+                return new ConcreteValue(ov[0].Equals(ov[1]));
             },
             (IExpr[] args) => string.Join("==", args.Select((IExpr exp) => Operator.BlockToString(exp))),
             (double)Priority.LOW,
@@ -145,8 +145,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] != ov[1]);
+                var ov = cal.GetValue<object>(args);
+                return new ConcreteValue(!(ov[0].Equals(ov[1])));
             },
             (IExpr[] args) => string.Join("!=", args.Select((IExpr exp) => Operator.BlockToString(exp))),
             (double)Priority.LOW,
@@ -162,8 +162,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] > ov[1]);
+                var ov = cal.GetValue<IComparable>(args);
+                return new ConcreteValue(ov[0].CompareTo(ov[1])>0);
             },
             (IExpr[] args) => string.Join(">", args.Select((IExpr exp) => Operator.BlockToString(exp))),
             (double)Priority.LOW,
@@ -179,8 +179,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] < ov[1]);
+                var ov = cal.GetValue<IComparable>(args);
+                return new ConcreteValue(ov[0].CompareTo(ov[1]) < 0);
             },
             (IExpr[] args) => string.Join("<", args.Select((IExpr exp) => Operator.BlockToString(exp))),
             (double)Priority.LOW,
@@ -196,8 +196,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] >= ov[1]);
+                var ov = cal.GetValue<IComparable>(args);
+                return new ConcreteValue(ov[0].CompareTo(ov[1]) >= 0);
             },
             (IExpr[] args) => string.Join(">=", args.Select((IExpr exp) => Operator.BlockToString(exp))),
             (double)Priority.LOW,
@@ -213,8 +213,8 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(ov[0] <= ov[1]);
+                var ov = cal.GetValue<IComparable>(args);
+                return new ConcreteValue(ov[0].CompareTo(ov[1]) <= 0);
             },
             (IExpr[] args) => string.Join("<=", args.Select((IExpr exp) => Operator.BlockToString(exp))),
             (double)Priority.LOW,

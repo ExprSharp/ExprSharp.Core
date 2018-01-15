@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExprSharp.Core.Exprs
+namespace ExprSharp.Runtime
 {
     public static class CoreOperations
     {
@@ -20,13 +20,13 @@ namespace ExprSharp.Core.Exprs
                     if (OperationHelper.AssertArgsNumber(1, args))
                     {
                         OperationHelper.AssertCertainValueThrowIf(args[0]);
-                        int n = OperationHelper.GetValue<int>(args[0]);
+                        int n = cal.GetValue<int>(args[0]);
                         return new TupleValue(new IValue[n]);
                     }
                     else if (OperationHelper.AssertArgsNumber(2, args))
                     {
                         OperationHelper.AssertCertainValueThrowIf(args[0]);
-                        int n = OperationHelper.GetValue<int>(args[0]);
+                        int n = cal.GetValue<int>(args[0]);
                         List<IValue> exps = new List<IValue>();
                         if (args[1] is IValue)
                         {
@@ -73,6 +73,15 @@ namespace ExprSharp.Core.Exprs
                 -1
                 );
 
+        public static PreFunctionValue Class { get; } = new PreFunctionValue(
+                "class",
+                (FunctionArgument _args, EvalContext cal) =>
+                {
+                    return new ClassValue();
+                },
+                -1
+                );
+
         /// <summary>
         /// 赋值
         /// </summary>
@@ -87,7 +96,7 @@ namespace ExprSharp.Core.Exprs
                 switch (a0)
                 {
                     case ConcreteValue v://可能是列表中的元素，也可能得到常量列表中的ReadOnlyValue，但会赋值错误
-                            v.Value = OperationHelper.GetValue<object>(args[1]);
+                            v.Value = OperationHelper.GetValue(args[1]);
                             return v;
                     default:
                         if(left is VariableToken)//这是可能是a0可能Function

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace ExprSharp.Core.Exprs
+namespace ExprSharp.Runtime
 {
     public static class LogicOperations
     {
@@ -20,7 +20,7 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var bs = OperationHelper.GetValue<bool>(args);
+                var bs = cal.GetValue<bool>(args);
                 return new ConcreteValue(bs[0] || bs[1]);
             },
             null,
@@ -37,7 +37,7 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var bs = OperationHelper.GetValue<bool>(args);
+                var bs = cal.GetValue<bool>(args);
                 return new ConcreteValue(bs[0] ^ bs[1]);
             },
             null,
@@ -54,7 +54,7 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var bs = OperationHelper.GetValue<bool>(args);
+                var bs = cal.GetValue<bool>(args);
                 return new ConcreteValue(bs[0] && bs[1]);
             },
             null,
@@ -71,7 +71,7 @@ namespace ExprSharp.Core.Exprs
             {
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var p = OperationHelper.GetValue<bool>(args[0]);
+                var p = cal.GetValue<bool>(args[0]);
                 return new ConcreteValue(!p);
             },
             (IExpr[] args) => $"!{Operator.BlockToString(args[0])}",

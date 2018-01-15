@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using iExpr;
 using iExpr.Exceptions;
-using iExpr.Parser;
+using iExpr.Parsers;
 using iExpr.Values;
 
-namespace ExprSharp.Core.Exprs
+namespace ExprSharp.Runtime
 {
+
     internal class BasicTokenChecker : TokenChecker
     {
         int pointcnt = 0;
@@ -22,7 +23,7 @@ namespace ExprSharp.Core.Exprs
         public override bool? Append(char c)
         {
             var res = base.Append(c);
-            if (c == '.') pointcnt++;
+            if (c == '.') { pointcnt++; return null; }
             //if (c == '-') isneg = true;
             return res;
         }
@@ -31,12 +32,54 @@ namespace ExprSharp.Core.Exprs
         {
             if (Flag == null)
                 return char.IsDigit(c);// || c=='-';
-            if (c == '.') return pointcnt == 0;
+            if (c == '.') if (pointcnt == 0) return null; else return false;
             return char.IsDigit(c);
         }
     }
 
-    public class EParse : iExpr.Parser.ParseEnvironment
+    internal class StrTokenChecker : TokenChecker
+    {
+        bool? isended = null;
+        //bool isneg = false;
+
+        public override void Clear()
+        {
+            base.Clear(); isended = null;
+            //isneg = false;
+        }
+
+        public override bool? Append(char c)
+        {
+            var res = base.Append(c);
+            if (c == '"')
+            {
+                if (isended == null)
+                {
+                    isended = false;
+                }
+                else if (isended == false)
+                {
+                    isended = true;
+                }
+            }
+            else
+            {
+                if (Flag !=true)//str starts(not null, because it has been appended)
+                    isended = true;
+            }
+            return res;
+        }
+
+        public override bool? Test(char c)
+        {
+            if (Flag == null)
+                return c == '"';// || c=='-';
+            if (isended==true) return false;
+            return true;
+        }
+    }
+
+    public class EParse : iExpr.Parsers.ParseEnvironment
     {
         public EParse()
         {
@@ -63,8 +106,14 @@ namespace ExprSharp.Core.Exprs
             base.Operations.Add(ControlStatements.Break);
             base.Operations.Add(ControlStatements.Return);
             base.Operations.Add(iExpr.Exprs.Core.CoreOperations.Lambda);
+            base.Operations.Add(iExpr.Exprs.Core.CoreOperations.In);
             base.VariableChecker = new VariableTokenChecker();
-            base.BasicTokenChecker = new BasicTokenChecker();
+
+            var tchecker = new TokenCheckerSelector();
+            tchecker.Checkers.Add(new BasicTokenChecker());
+            tchecker.Checkers.Add(new StrTokenChecker());
+
+            base.BasicTokenChecker = tchecker;
             base.Constants = new ConstantList();
             Constants.Add(new ConstantToken("true", new ReadOnlyConcreteValue(true)));
             Constants.Add(new ConstantToken("false", new ReadOnlyConcreteValue(false)));
@@ -73,6 +122,7 @@ namespace ExprSharp.Core.Exprs
             Constants.Add(new ConstantToken("e", new ReadOnlyConcreteValue(System.Math.E)));
             Constants.Add(new ConstantToken("pi", new ReadOnlyConcreteValue(System.Math.PI)));
             Constants.Add(new ConstantToken("null", BuiltinValues.Null));
+            Constants.Add(new ConstantToken("gift", new PreClassValue(typeof(ExprSharp.Gift))));
             Constants.AddFunction(MathOperations.Abs);
             Constants.AddFunction(MathOperations.Sin);
             Constants.AddFunction(MathOperations.Cos);
@@ -88,6 +138,7 @@ namespace ExprSharp.Core.Exprs
             Constants.AddFunction(MathOperations.Ln);
             Constants.AddFunction(MathOperations.Log);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Length);
+            Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.HasVariable);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.List);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Set);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Tuple);
@@ -102,12 +153,17 @@ namespace ExprSharp.Core.Exprs
             Constants.AddFunction(ControlStatements.DoWhile);
             Constants.AddFunction(CoreOperations.Array);
             Constants.AddFunction(CoreOperations.Func);
+            Constants.AddFunction(CoreOperations.Class);
             base.BuildOpt();
         }
 
         public override IValue GetBasicValue(Symbol symbol)
         {
-            return new ConcreteValue(double.Parse(symbol.Value));
+            if (double.TryParse(symbol.Value, out double res))
+            {
+                return new ConcreteValue(new RealNumber(res));
+            }
+            else return new ConcreteValue(symbol.Value.Substring(1, symbol.Value.Length-2));
         }
     }
 }

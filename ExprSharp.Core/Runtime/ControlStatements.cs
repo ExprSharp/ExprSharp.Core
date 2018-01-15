@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExprSharp.Core.Exprs
+namespace ExprSharp.Runtime
 {
     internal class ForFunctionValue : PreFunctionValue
     {
@@ -21,7 +21,7 @@ namespace ExprSharp.Core.Exprs
             try
             {
                 for (cal.Evaluate(main.Begin);
-                            OperationHelper.GetValue<bool>(cal.Evaluate(main.Condition));
+                            cal.GetValue<bool>(cal.Evaluate(main.Condition));
                             cal.Evaluate(main.Step))
                 {
                     try
@@ -61,7 +61,7 @@ namespace ExprSharp.Core.Exprs
             var children = args.Contents;
             try
             {
-                CollectionValue l = OperationHelper.GetValue<CollectionValue>(cal.Evaluate(main.Collection));
+                CollectionValue l = cal.GetValue<CollectionValue>(cal.Evaluate(main.Collection));
                 foreach (var t in l)
                 {
                     cal.Variables.Set(main.Vid, t);
@@ -99,7 +99,7 @@ namespace ExprSharp.Core.Exprs
             var children = args.Contents;
             try
             {
-                while (OperationHelper.GetValue<bool>(cal.Evaluate(main.Condition)))
+                while (cal.GetValue<bool>(cal.Evaluate(main.Condition)))
                 {
                     try
                     {
@@ -145,7 +145,7 @@ namespace ExprSharp.Core.Exprs
                         continue;
                     }
                 }
-                while (OperationHelper.GetValue<bool>(cal.Evaluate(main.Condition)));
+                while (cal.GetValue<bool>(cal.Evaluate(main.Condition)));
             }
             catch (BBreak)
             {
@@ -168,7 +168,7 @@ namespace ExprSharp.Core.Exprs
         static IExpr Execute(IfFunctionValue main, FunctionArgument args, EvalContext cal)
         {
             var children = args.Contents;
-            if (OperationHelper.GetValue<bool>(cal.Evaluate(main.Condition)))
+            if (cal.GetValue<bool>(cal.Evaluate(main.Condition)))
             {
                 foreach (var v in children) cal.Evaluate(v);
                 return BuiltinValues.Null;
@@ -270,7 +270,7 @@ namespace ExprSharp.Core.Exprs
                 throw new BReturn(args[0]);
             },
             (IExpr[] args) => $"return {Operator.BlockToString(args[0])}",
-            (double)Priority.High,
+            (double)Priority.lowest,
             Association.Right,
             1);
 
@@ -281,7 +281,7 @@ namespace ExprSharp.Core.Exprs
                 throw new BBreak();
             },
             (IExpr[] args) => $"break",
-            (double)Priority.High,
+            (double)Priority.lowest,
             Association.Right,
             0);
 
@@ -292,7 +292,7 @@ namespace ExprSharp.Core.Exprs
                 throw new BContinue();
             },
             (IExpr[] args) => $"continue",
-            (double)Priority.High,
+            (double)Priority.lowest,
             Association.Right,
             0);
     }

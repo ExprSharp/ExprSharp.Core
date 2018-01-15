@@ -3,8 +3,8 @@
 </div>
 
 ![](https://img.shields.io/badge/framework-.netcore2.0-blue.svg)
-![](https://img.shields.io/badge/iexpr.core-v0.5.2-brightgreen.svg)
-![](http://progressed.io/bar/20?title=done)
+![](https://img.shields.io/badge/iexpr.core-v0.5.2.7-brightgreen.svg)
+![](http://progressed.io/bar/50?title=done)
 
 [x]: ![](https://img.shields.io/badge/build-passing-brightgreen.svg)
 [x]: ![](https://img.shields.io/badge/release-v0.5.2-blue.svg)
@@ -18,7 +18,7 @@ The basic builder and runtime for ExprSharp.
 > ExprSharp: A tiny code language based on [iExpr.Core](https://github.com/iExpr/iExpr.Core).
 
 # Links
-+ <a href="exprsharp.github.io">
++ <a href="https://github.com/ExprSharp">
     <img src="./resources/images/exprsharp.png" width = "8%"/>
 </a>
 

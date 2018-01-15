@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExprSharp.Core.Exprs.Helpers
+namespace ExprSharp.Runtime.Helpers
 {
     public class RuntimeBreak : Exception
     {

@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExprSharp.Core.Exprs
+using number = ExprSharp.RealNumber;
+
+namespace ExprSharp.Runtime
 {
     public class MathOperations
     {
@@ -19,8 +21,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Ceiling(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Ceiling(ov)));
             },
             1);
 
@@ -34,8 +36,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Floor(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Floor(ov)));
             },
             1);
 
@@ -49,8 +51,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Round(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Round(ov)));
             },
             1);
 
@@ -64,8 +66,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Sign(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Sign(ov)));
             },
             1);
 
@@ -79,8 +81,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Exp(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Exp(ov)));
             },
             1);
 
@@ -94,8 +96,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Abs(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Abs(ov)));
             },
             1);
 
@@ -109,8 +111,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Sin(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Sin(ov)));
             },
             1);
 
@@ -124,8 +126,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Cos(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Cos(ov)));
             }, 1);
 
         /// <summary>
@@ -138,8 +140,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Tan(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Tan(ov)));
             }, 1);
 
         /// <summary>
@@ -152,8 +154,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Asin(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Asin(ov)));
             },
             1);
 
@@ -167,8 +169,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Acos(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Acos(ov)));
             },
             1);
 
@@ -182,8 +184,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Atan(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Atan(ov)));
             },
             1);
 
@@ -197,8 +199,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(1, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args[0]);
-                return new ConcreteValue(System.Math.Log(ov));
+                var ov = cal.GetValue<number>(args[0]);
+                return new ConcreteValue(new number(System.Math.Log(ov)));
             }, 1);
 
         /// <summary>
@@ -211,8 +213,8 @@ namespace ExprSharp.Core.Exprs
                 var args = _args.Arguments;
                 OperationHelper.AssertArgsNumberThrowIf(2, args);
                 OperationHelper.AssertCertainValueThrowIf(args);
-                var ov = OperationHelper.GetValue<double>(args);
-                return new ConcreteValue(System.Math.Log(ov[1]) / System.Math.Log(ov[0]));
+                var ov = cal.GetValue<number>(args);
+                return new ConcreteValue(new number(System.Math.Log(ov[1]) / System.Math.Log(ov[0])));
             },
             2);
     }

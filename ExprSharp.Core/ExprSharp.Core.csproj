@@ -10,12 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="iExpr.Core" Version="0.5.2.7" />
-    <PackageReference Include="iExpr.Exprs.Program" Version="0.5.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Runtime\" />
+    <PackageReference Include="iExpr.Core" Version="0.5.2.13" />
+    <PackageReference Include="iExpr.Exprs.Program" Version="0.5.0.5" />
+    <PackageReference Include="iExpr.Extensions.Math.Numerics" Version="0.1.0.1" />
   </ItemGroup>
 
 </Project>

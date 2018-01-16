@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 using iExpr;
+using iExpr.Exprs.Core;
+using iExpr.Extensions.Math.Numerics;
 
 namespace ExprSharp
 {
     public struct RealNumber : IAdditive, ISubtractive, IMultiplicable, IDivisible, IMouldable, IPowerable, IEquatable<RealNumber>,IComparable<RealNumber>,IComparable
     {
-        double Value;
+        public static BigDecimalFactory Factory = new BigDecimalFactory(100);
+
+        BigDecimal Value;
 
         public static implicit operator RealNumber(double value)
         {
@@ -15,11 +20,41 @@ namespace ExprSharp
         }
         public static implicit operator double(RealNumber value)
         {
-            return value.Value;
+            return (double)value.Value;
+        }
+        public static implicit operator RealNumber(bool value)
+        {
+            return new RealNumber(value?1:0);
+        }
+        public static implicit operator bool(RealNumber value)
+        {
+            return value.Value!=0;
+        }
+        public static implicit operator RealNumber(int value)
+        {
+            return new RealNumber(value);
+        }
+        public static implicit operator int(RealNumber value)
+        {
+            return (int)value.Value;
+        }
+        public static implicit operator RealNumber(long value)
+        {
+            return new RealNumber(value);
+        }
+        public static implicit operator long(RealNumber value)
+        {
+            return (int)value.Value;
         }
 
         public RealNumber(double value)
         {
+            Value = Factory.Get(value);
+        }
+
+        public RealNumber(BigDecimal value)
+        {
+            if (value.Precision != Factory.Precision) throw new ArgumentException();
             Value = value;
         }
 
@@ -55,7 +90,8 @@ namespace ExprSharp
         {
             if (!(right is RealNumber)) throw new ArgumentException();
             var v = (RealNumber)right;
-            return new RealNumber(System.Math.Pow(Value,v.Value));
+            //return new RealNumber(System.Math.Pow(Value,v.Value));
+            return new RealNumber(BigDecimal.Pow(Value,(BigInteger)v.Value));
         }
 
         public object Subtract(object right)
@@ -63,6 +99,11 @@ namespace ExprSharp
             if (!(right is RealNumber)) throw new ArgumentException();
             var v = (RealNumber)right;
             return new RealNumber(Value-v.Value);
+        }
+
+        public object Negtive()
+        {
+            return -this;
         }
 
         public static bool operator ==(RealNumber number1, RealNumber number2)
@@ -119,9 +160,7 @@ namespace ExprSharp
 
         public override bool Equals(object obj)
         {
-            if (obj is double) return Value == ((double)obj);
-            else if (obj is decimal) return (decimal)Value == ((decimal)obj);
-            return obj is RealNumber && Equals((RealNumber)obj);
+            return (obj is RealNumber && Equals((RealNumber)obj)) || this.Value.Equals(obj);
         }
 
         public bool Equals(RealNumber other)

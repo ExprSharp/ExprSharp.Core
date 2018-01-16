@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using iExpr.Evaluators;
+using iExpr.Helpers;
 using iExpr.Values;
 
 namespace ExprSharp.Runtime
@@ -18,22 +19,41 @@ namespace ExprSharp.Runtime
 
         protected override T GetValue<T>(ConcreteValue exp)
         {
-            if (typeof(T).IsAssignableFrom(typeof(RealNumber))) {
-                try
-                {
-                    double d = Convert.ToDouble(exp.Value);
-                    return (T)(object)(new RealNumber(d));
-                }
-                catch { }
+            switch (OperationHelper.GetValue(exp))
+            {
+                case double d:
+                case int i:
+                case bool b:
+                    try
+                    {
+                        return base.GetValue<T>(exp);
+                    }
+                    catch
+                    {
+                        double v = Convert.ToDouble(exp.Value);
+                        return (T)(object)(new RealNumber(v));
+                    }
+                case RealNumber r:
+                    try
+                    {
+                        var d = (double)r;
+                        return (T)Convert.ChangeType(d, typeof(T));
+                    }
+                    catch
+                    {
+                        return (T)(object)r;
+                    }
+                case string s:
+                    return (T)(object)s;
             }
-            if(exp.Value is RealNumber)
+            /*if(exp.Value is RealNumber)
             {
                 try
                 {
                     return (T)Convert.ChangeType((double)((RealNumber)exp.Value),typeof(T));
                 }
                 catch { }
-            }
+            }*/
             return base.GetValue<T>(exp);
         }
 

@@ -7,9 +7,11 @@ using System.Text;
 
 namespace ExprSharp
 {
+    [CanClassValue(Name ="gift")]
     public static class Gift
     {
-        public static string hi(FunctionArgument _args,EvalContext cal)
+        [ClassMethod(Name ="hi",ArgumentCount =1)]
+        public static string Hi(FunctionArgument _args,EvalContext cal)
         {
             var args = _args.Arguments;
             OperationHelper.AssertArgsNumberThrowIf(1, args);

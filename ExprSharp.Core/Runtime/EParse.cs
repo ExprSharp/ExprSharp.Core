@@ -5,6 +5,7 @@ using iExpr;
 using iExpr.Exceptions;
 using iExpr.Exprs.Core;
 using iExpr.Exprs.Program;
+using iExpr.Extensions.Math.Numerics;
 using iExpr.Parsers;
 using iExpr.Values;
 
@@ -122,8 +123,10 @@ namespace ExprSharp.Runtime
             Constants.Add(new ConstantToken("True", new ReadOnlyConcreteValue(true)));
             Constants.Add(new ConstantToken("False", new ReadOnlyConcreteValue(false)));
             Constants.Add(new ConstantToken("null", BuiltinValues.Null));
-            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.Build(typeof(ExprSharp.Gift)));
-            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.Build(typeof(ExprSharp.Math)));
+            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Gift)),false);
+            //Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(iExpr.Exprs.Program.DictionaryValue)), false);
+            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Math)),true);
+            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Random)),true);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Length);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.HasVariable);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.List);
@@ -139,20 +142,35 @@ namespace ExprSharp.Runtime
             Constants.AddFunction(ControlStatements.While);
             Constants.AddFunction(ControlStatements.DoWhile);
             Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Array);
+            Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Dict);
             Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Func);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Class);
-            Constants.AddFunction(ExprSharp.Runtime.Operations.Decimal);
+            Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Iterator);
             Constants.AddFunction(ExprSharp.Runtime.Operations.Print);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Input);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Integer);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Number);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.String);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Decimal);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Sorted);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Select);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Where);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Zip);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Reduce);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Range);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Import);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.Module);
+            Constants.AddFunction(ExprSharp.Runtime.Operations.View);
             base.BuildOpt();
         }
 
         public override IValue GetBasicValue(Symbol symbol)
         {
-            if (double.TryParse(symbol.Value, out double res))
+            if (symbol.Value.StartsWith("\""))
             {
-                return new ConcreteValue(new RealNumber(res));
+                return new ConcreteValue(symbol.Value.Substring(1, symbol.Value.Length - 2));
             }
-            else return new ConcreteValue(symbol.Value.Substring(1, symbol.Value.Length-2));
+            else return new ConcreteValue(new RealNumber(BigDecimal.Parse(symbol.Value)));
         }
     }
 }

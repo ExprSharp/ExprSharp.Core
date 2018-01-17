@@ -11,7 +11,7 @@ namespace ExprSharp
     [CanClassValue(Name = "math")]
     public class Math
     {
-        [ClassMethod(Name = "ceil",ArgumentCount =1)]
+        [ClassMethod(Name = "ceil",ArgumentCount =1,IsReadOnly =true)]
         public static number Ceil(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -21,7 +21,7 @@ namespace ExprSharp
             return new number(System.Math.Ceiling((double)ov));
         }
         
-        [ClassMethod(Name = "floor", ArgumentCount = 1)]
+        [ClassMethod(Name = "floor", ArgumentCount = 1, IsReadOnly = true)]
         public static number Floor(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -31,7 +31,7 @@ namespace ExprSharp
             return new number(System.Math.Floor((double)ov));
         }
 
-        [ClassMethod(Name = "round", ArgumentCount = 1)]
+        [ClassMethod(Name = "round", ArgumentCount = 1, IsReadOnly = true)]
         public static number Round(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -41,7 +41,7 @@ namespace ExprSharp
             return new number(System.Math.Round((double)ov));
         }
 
-        [ClassMethod(Name = "sign", ArgumentCount = 1)]
+        [ClassMethod(Name = "sign", ArgumentCount = 1, IsReadOnly = true)]
         public static number Sign(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -51,7 +51,7 @@ namespace ExprSharp
             return new number(System.Math.Sign((decimal)ov));
         }
 
-        [ClassMethod(Name = "exp", ArgumentCount = 1)]
+        [ClassMethod(Name = "exp", ArgumentCount = 1, IsReadOnly = true)]
         public static number Exp(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -61,7 +61,7 @@ namespace ExprSharp
             return new number(System.Math.Exp((double)ov));
         }
 
-        [ClassMethod(Name = "abs", ArgumentCount = 1)]
+        [ClassMethod(Name = "abs", ArgumentCount = 1, IsReadOnly = true)]
         public static number Abs(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -71,7 +71,7 @@ namespace ExprSharp
             return new number(System.Math.Abs((double)ov));
         }
 
-        [ClassMethod(Name = "sin", ArgumentCount = 1)]
+        [ClassMethod(Name = "sin", ArgumentCount = 1, IsReadOnly = true)]
         public static number Sin(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -81,7 +81,7 @@ namespace ExprSharp
             return new number(System.Math.Sin(ov));
         }
 
-        [ClassMethod(Name = "cos", ArgumentCount = 1)]
+        [ClassMethod(Name = "cos", ArgumentCount = 1, IsReadOnly = true)]
         public static number Cos(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -91,7 +91,7 @@ namespace ExprSharp
             return new number(System.Math.Cos(ov));
         }
 
-        [ClassMethod(Name = "tan", ArgumentCount = 1)]
+        [ClassMethod(Name = "tan", ArgumentCount = 1, IsReadOnly = true)]
         public static number Tan(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -101,7 +101,7 @@ namespace ExprSharp
             return new number(System.Math.Tan(ov));
         }
 
-        [ClassMethod(Name = "asin", ArgumentCount = 1)]
+        [ClassMethod(Name = "asin", ArgumentCount = 1, IsReadOnly = true)]
         public static number ArcSin(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -111,7 +111,7 @@ namespace ExprSharp
             return new number(System.Math.Asin(ov));
         }
 
-        [ClassMethod(Name = "acos", ArgumentCount = 1)]
+        [ClassMethod(Name = "acos", ArgumentCount = 1, IsReadOnly = true)]
         public static number ArcCos(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -121,7 +121,7 @@ namespace ExprSharp
             return new number(System.Math.Acos(ov));
         }
 
-        [ClassMethod(Name = "atan", ArgumentCount = 1)]
+        [ClassMethod(Name = "atan", ArgumentCount = 1, IsReadOnly = true)]
         public static number ArcTan(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -131,7 +131,7 @@ namespace ExprSharp
             return new number(System.Math.Atan(ov));
         }
 
-        [ClassMethod(Name = "ln", ArgumentCount = 1)]
+        [ClassMethod(Name = "ln", ArgumentCount = 1, IsReadOnly = true)]
         public static number Ln(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -141,7 +141,7 @@ namespace ExprSharp
             return new number(System.Math.Log(ov));
         }
 
-        [ClassMethod(Name = "log", ArgumentCount = 2)]
+        [ClassMethod(Name = "log", ArgumentCount = 2, IsReadOnly = true)]
         public static number Log(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
@@ -151,9 +151,9 @@ namespace ExprSharp
             return new number(System.Math.Log(ov[1]) / System.Math.Log(ov[0]));
         }
 
-        [ClassField(Name = "e")]
+        [ClassField(Name = "e", IsReadOnly = true)]
         public static ReadOnlyConcreteValue E { get; } = new ReadOnlyConcreteValue(System.Math.E);
-        [ClassField(Name = "pi")]
+        [ClassField(Name = "pi", IsReadOnly = true)]
         public static ReadOnlyConcreteValue PI { get; } = new ReadOnlyConcreteValue(System.Math.PI);
     }
 }

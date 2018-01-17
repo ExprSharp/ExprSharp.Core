@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using iExpr;
 using iExpr.Evaluators;
 using iExpr.Helpers;
 using iExpr.Values;
@@ -12,25 +13,26 @@ namespace ExprSharp.Runtime
     {
         protected EEContext() { }
 
-        public override EvalContext GetChild()
+        public override EvalContext GetChild(VariableFindMode mode = VariableFindMode.UpAll)
         {
             return new EEContext() { Evaluator = Evaluator, CancelToken = CancelToken, Parent = this };
         }
 
-        protected override T GetValue<T>(ConcreteValue exp)
+        protected override T ConvertValue<T>(object obj)
         {
-            switch (OperationHelper.GetValue(exp))
+            //if(obj==null)Console.WriteLine("!!");
+            switch (obj)
             {
                 case double d:
                 case int i:
                 case bool b:
                     try
                     {
-                        return base.GetValue<T>(exp);
+                        return base.ConvertValue<T>(obj);
                     }
                     catch
                     {
-                        double v = Convert.ToDouble(exp.Value);
+                        double v = Convert.ToDouble(obj);
                         return (T)(object)(new RealNumber(v));
                     }
                 case RealNumber r:
@@ -54,7 +56,7 @@ namespace ExprSharp.Runtime
                 }
                 catch { }
             }*/
-            return base.GetValue<T>(exp);
+            return base.ConvertValue<T>(obj);
         }
 
         public new static EvalContext Create(CancellationTokenSource cancel)

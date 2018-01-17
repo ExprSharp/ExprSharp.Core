@@ -24,7 +24,7 @@ namespace ExprSharp.Runtime
         public object Execute(string code)
         {
             var e = eb.GetExpr(code);
-            return OperationHelper.GetValue(context.Evaluate(e));
+            return context.Evaluate(e);
         }
 
         public EvalEnvironment EvalEnvironment { get => ev; }

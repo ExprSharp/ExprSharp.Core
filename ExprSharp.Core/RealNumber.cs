@@ -12,7 +12,7 @@ namespace ExprSharp
     {
         public static BigDecimalFactory Factory = new BigDecimalFactory(100);
 
-        BigDecimal Value;
+        public BigDecimal Value;
 
         public static implicit operator RealNumber(double value)
         {
@@ -54,7 +54,7 @@ namespace ExprSharp
 
         public RealNumber(BigDecimal value)
         {
-            if (value.Precision != Factory.Precision) throw new ArgumentException();
+            if (value.Precision != Factory.Precision) value.SetPrecision(Factory.Precision);
             Value = value;
         }
 
@@ -124,6 +124,11 @@ namespace ExprSharp
         public static RealNumber operator -(RealNumber left, RealNumber right)
         {
             return (RealNumber)left.Subtract(right);
+        }
+
+        public static RealNumber operator -(RealNumber left)
+        {
+            return new RealNumber(-left.Value);
         }
 
         public static RealNumber operator *(RealNumber left, RealNumber right)

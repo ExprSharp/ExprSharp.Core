@@ -60,35 +60,35 @@ namespace ExprSharp
 
         public object Add(object right)
         {
-            if (!(right is RealNumber)) throw new ArgumentException();
+            if (!(right is RealNumber)) throw new ArgumentException("Not a real number",nameof(right));
             var v = (RealNumber)right;
             return new RealNumber(Value + v.Value);
         }
 
         public object Divide(object right)
         {
-            if (!(right is RealNumber)) throw new ArgumentException();
+            if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
             return new RealNumber(Value/v.Value);
         }
 
         public object Mod(object right)
         {
-            if (!(right is RealNumber)) throw new ArgumentException();
+            if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
             return new RealNumber(Value % v.Value);
         }
 
         public object Multiply(object right)
         {
-            if (!(right is RealNumber)) throw new ArgumentException();
+            if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
             return new RealNumber(Value*v.Value);
         }
 
         public object Pow(object right)
         {
-            if (!(right is RealNumber)) throw new ArgumentException();
+            if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
             //return new RealNumber(System.Math.Pow(Value,v.Value));
             return new RealNumber(BigDecimal.Pow(Value,(BigInteger)v.Value));
@@ -96,7 +96,7 @@ namespace ExprSharp
 
         public object Subtract(object right)
         {
-            if (!(right is RealNumber)) throw new ArgumentException();
+            if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
             return new RealNumber(Value-v.Value);
         }
@@ -183,7 +183,7 @@ namespace ExprSharp
 
         public int CompareTo(object obj)
         {
-            if (!(obj is RealNumber)) throw new ArgumentException();
+            if (!(obj is RealNumber)) throw new ArgumentException("Not a real number", nameof(obj));
             return CompareTo((RealNumber)obj);
         }
 

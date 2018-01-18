@@ -11,77 +11,6 @@ using iExpr.Values;
 
 namespace ExprSharp.Runtime
 {
-
-    internal class BasicTokenChecker : TokenChecker
-    {
-        int pointcnt = 0;
-        //bool isneg = false;
-
-        public override void Clear()
-        {
-            base.Clear(); pointcnt = 0;
-            //isneg = false;
-        }
-
-        public override bool? Append(char c)
-        {
-            var res = base.Append(c);
-            if (c == '.') { pointcnt++; return null; }
-            //if (c == '-') isneg = true;
-            return res;
-        }
-
-        public override bool? Test(char c)
-        {
-            if (Flag == null)
-                return char.IsDigit(c);// || c=='-';
-            if (c == '.') if (pointcnt == 0) return null; else return false;
-            return char.IsDigit(c);
-        }
-    }
-
-    internal class StrTokenChecker : TokenChecker
-    {
-        bool? isended = null;
-        //bool isneg = false;
-
-        public override void Clear()
-        {
-            base.Clear(); isended = null;
-            //isneg = false;
-        }
-
-        public override bool? Append(char c)
-        {
-            var res = base.Append(c);
-            if (c == '"')
-            {
-                if (isended == null)
-                {
-                    isended = false;
-                }
-                else if (isended == false)
-                {
-                    isended = true;
-                }
-            }
-            else
-            {
-                if (Flag !=true)//str starts(not null, because it has been appended)
-                    isended = true;
-            }
-            return res;
-        }
-
-        public override bool? Test(char c)
-        {
-            if (Flag == null)
-                return c == '"';// || c=='-';
-            if (isended==true) return false;
-            return true;
-        }
-    }
-
     public class EParse : iExpr.Parsers.ParseEnvironment
     {
         public EParse()
@@ -92,6 +21,12 @@ namespace ExprSharp.Runtime
             base.Operations.Add(LogicOperations.Not);
             base.Operations.Add(LogicOperations.Xor);
             base.Operations.Add(iExpr.Exprs.Program.CoreOperations.Assign);
+            base.Operations.Add(iExpr.Exprs.Program.CoreOperations.AssignPlus);
+            base.Operations.Add(iExpr.Exprs.Program.CoreOperations.AssignMinus);
+            base.Operations.Add(iExpr.Exprs.Program.CoreOperations.AssignMultiply);
+            base.Operations.Add(iExpr.Exprs.Program.CoreOperations.AssignDivide);
+            base.Operations.Add(iExpr.Exprs.Program.CoreOperations.AssignPow);
+            base.Operations.Add(iExpr.Exprs.Program.CoreOperations.AssignMod);
             base.Operations.Add(iExpr.Exprs.Program.CoreOperations.ReAssign);
             base.Operations.Add(ArithmeticOperations.Plus);
             base.Operations.Add(ArithmeticOperations.Minus);
@@ -113,15 +48,15 @@ namespace ExprSharp.Runtime
             base.VariableChecker = new VariableTokenChecker();
 
             var tchecker = new TokenCheckerSelector();
-            tchecker.Checkers.Add(new BasicTokenChecker());
-            tchecker.Checkers.Add(new StrTokenChecker());
+            tchecker.Checkers.Add(new iExpr.Parsers.RealNumberTokenChecker());
+            tchecker.Checkers.Add(new iExpr.Parsers.StringTokenChecker());
 
             base.BasicTokenChecker = tchecker;
             base.Constants = new ConstantList();
-            Constants.Add(new ConstantToken("true", new ReadOnlyConcreteValue(true)));
-            Constants.Add(new ConstantToken("false", new ReadOnlyConcreteValue(false)));
-            Constants.Add(new ConstantToken("True", new ReadOnlyConcreteValue(true)));
-            Constants.Add(new ConstantToken("False", new ReadOnlyConcreteValue(false)));
+            Constants.Add(new ConstantToken("true", BuiltinValues.True));
+            Constants.Add(new ConstantToken("false", BuiltinValues.False));
+            Constants.Add(new ConstantToken("True", BuiltinValues.True));
+            Constants.Add(new ConstantToken("False", BuiltinValues.False));
             Constants.Add(new ConstantToken("null", BuiltinValues.Null));
             Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Gift)),false);
             //Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(iExpr.Exprs.Program.DictionaryValue)), false);
@@ -129,9 +64,10 @@ namespace ExprSharp.Runtime
             Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Random)),true);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Length);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.HasVariable);
-            Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.List);
-            Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Set);
-            Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Tuple);
+            Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.List);
+            Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Set);
+            Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Tuple);
+            Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Dict);
             Constants.AddFunction(StatsOperations.Maximum);
             Constants.AddFunction(StatsOperations.Minimum);
             Constants.AddFunction(StatsOperations.Mean);
@@ -142,7 +78,6 @@ namespace ExprSharp.Runtime
             Constants.AddFunction(ControlStatements.While);
             Constants.AddFunction(ControlStatements.DoWhile);
             Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Array);
-            Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Dict);
             Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.Func);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Class);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Iterator);
@@ -164,6 +99,12 @@ namespace ExprSharp.Runtime
             base.BuildOpt();
         }
 
+        public override SymbolType GetSpecialSymbolType(char expr)
+        {
+            if (expr == ';') return SymbolType.Comma;
+            return base.GetSpecialSymbolType(expr);
+        }
+
         public override IValue GetBasicValue(Symbol symbol)
         {
             if (symbol.Value.StartsWith("\""))
@@ -171,6 +112,21 @@ namespace ExprSharp.Runtime
                 return new ConcreteValue(symbol.Value.Substring(1, symbol.Value.Length - 2));
             }
             else return new ConcreteValue(new RealNumber(BigDecimal.Parse(symbol.Value)));
+        }
+
+        public override ListValueBase GetListValue()
+        {
+            return new iExpr.Exprs.Program.ListValue();
+        }
+
+        public override TupleValueBase GetTupleValue()
+        {
+            return new iExpr.Exprs.Program.TupleValue();
+        }
+
+        public override SetValueBase GetSetValue()
+        {
+            return new iExpr.Exprs.Program.SetValue();
         }
     }
 }

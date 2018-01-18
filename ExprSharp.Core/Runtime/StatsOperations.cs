@@ -40,7 +40,7 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertCertainValueThrowIf(args);
+                OperationHelper.AssertCertainValueThrowIf(Maximum, args);
                 var vs = GetAll(args, cal);
                 //var vs = OperationHelper.GetConcreteValue<double>(args);
 
@@ -56,7 +56,7 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertCertainValueThrowIf(args);
+                OperationHelper.AssertCertainValueThrowIf(Minimum, args);
                 var vs = GetAll(args, cal);
                 //var vs = OperationHelper.GetConcreteValue<double>(args);
 
@@ -72,7 +72,7 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertCertainValueThrowIf(args);
+                OperationHelper.AssertCertainValueThrowIf(Total,args);
                 var vs = GetAll(args, cal);
                 //var vs = OperationHelper.GetConcreteValue<double>(args);
 
@@ -91,7 +91,7 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertCertainValueThrowIf(args);
+                OperationHelper.AssertCertainValueThrowIf(Mean,args);
                 var vs = GetAll(args, cal);
                 //var vs = OperationHelper.GetConcreteValue<double>(args);
 

@@ -14,11 +14,11 @@ namespace ExprSharp
     {
         static System.Random rand = new System.Random();
         
-        [ClassMethod(Name = "next", ArgumentCount = 1)]
+        [ClassMethod(Name = "next", ArgumentCount = 2)]
         public static number Next(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertCertainValueThrowIf(null,args);
             var ov = cal.GetValue<number>(args);
             switch (ov.Length)
             {
@@ -29,14 +29,15 @@ namespace ExprSharp
                 case 2:
                     return new number(rand.Next(ov[0],ov[1]));
             }
-            throw new EvaluateException("wrong argument count.");
+            ExceptionHelper.RaiseWrongArgsNumber(null, 2, args?.Length ?? 0);
+            return default;
         }
 
         [ClassMethod(Name = "nextd", ArgumentCount = 0)]
         public static number NextDouble(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(0,args);
+            OperationHelper.AssertArgsNumberThrowIf(null,0,args);
             return new number(rand.NextDouble());
         }
     }

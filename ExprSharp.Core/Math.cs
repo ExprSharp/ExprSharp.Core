@@ -15,8 +15,8 @@ namespace ExprSharp
         public static number Ceil(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null,1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Ceiling((double)ov));
         }
@@ -25,8 +25,8 @@ namespace ExprSharp
         public static number Floor(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Floor((double)ov));
         }
@@ -35,8 +35,8 @@ namespace ExprSharp
         public static number Round(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Round((double)ov));
         }
@@ -45,8 +45,8 @@ namespace ExprSharp
         public static number Sign(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Sign((decimal)ov));
         }
@@ -55,8 +55,8 @@ namespace ExprSharp
         public static number Exp(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Exp((double)ov));
         }
@@ -65,8 +65,8 @@ namespace ExprSharp
         public static number Abs(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Abs((double)ov));
         }
@@ -75,8 +75,8 @@ namespace ExprSharp
         public static number Sin(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Sin(ov));
         }
@@ -85,8 +85,8 @@ namespace ExprSharp
         public static number Cos(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Cos(ov));
         }
@@ -95,8 +95,8 @@ namespace ExprSharp
         public static number Tan(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Tan(ov));
         }
@@ -105,8 +105,8 @@ namespace ExprSharp
         public static number ArcSin(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Asin(ov));
         }
@@ -115,8 +115,8 @@ namespace ExprSharp
         public static number ArcCos(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Acos(ov));
         }
@@ -125,8 +125,8 @@ namespace ExprSharp
         public static number ArcTan(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Atan(ov));
         }
@@ -135,8 +135,8 @@ namespace ExprSharp
         public static number Ln(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(1, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 1, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args[0]);
             return new number(System.Math.Log(ov));
         }
@@ -145,8 +145,8 @@ namespace ExprSharp
         public static number Log(FunctionArgument _args, EvalContext cal)
         {
             var args = _args.Arguments;
-            OperationHelper.AssertArgsNumberThrowIf(2, args);
-            OperationHelper.AssertCertainValueThrowIf(args);
+            OperationHelper.AssertArgsNumberThrowIf(null, 2, args);
+            OperationHelper.AssertCertainValueThrowIf(null, args);
             var ov = cal.GetValue<number>(args);
             return new number(System.Math.Log(ov[1]) / System.Math.Log(ov[0]));
         }

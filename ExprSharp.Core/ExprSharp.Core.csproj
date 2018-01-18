@@ -7,12 +7,28 @@
     <Copyright>LGPL-3.0</Copyright>
     <RepositoryType>Git</RepositoryType>
     <RootNamespace>ExprSharp</RootNamespace>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryUrl>https://github.com/ExprSharp/ExprSharp.Core</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/ExprSharp/ExprSharp.Core</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/ExprSharp/ExprSharp.Core/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>The basic builder and runtime for ExprSharp.</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>StardustDL-Key.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="iExpr.Core" Version="0.5.3" />
-    <PackageReference Include="iExpr.Exprs.Program" Version="0.5.1" />
-    <PackageReference Include="iExpr.Extensions.Math.Numerics" Version="0.1.0.2" />
+    <PackageReference Include="iExpr.Core" Version="0.5.3.6" />
+    <PackageReference Include="iExpr.Exprs.Program" Version="0.5.3" />
+    <PackageReference Include="iExpr.Extensions.Math.Numerics" Version="0.1.0.3" />
   </ItemGroup>
 
 </Project>

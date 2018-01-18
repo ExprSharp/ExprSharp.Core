@@ -21,7 +21,7 @@ The basic builder and runtime for ExprSharp.
 |--------|--------|
 |iExpr.Core |![](https://img.shields.io/badge/-0.5.3-blue.svg)|
 |iExpr.Exprs.Program |![](https://img.shields.io/badge/-0.5.1-blue.svg)|
-|iExpr.Extensions.Math.Numerics|![](https://img.shields.io/badge/-0.1.0-blue.svg)
+|iExpr.Extensions.Math.Numerics|![](https://img.shields.io/badge/-0.1.0-blue.svg)|
 
 # Links
 + <a href="https://github.com/ExprSharp">

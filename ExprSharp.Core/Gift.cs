@@ -22,7 +22,7 @@ namespace ExprSharp
         [ClassCtorMethod(ArgumentCount =1)]
         public Gift(FunctionArgument _args, EvalContext cal)
         {
-            OperationHelper.AssertArgsNumberThrowIf(1, _args.Arguments);
+            OperationHelper.AssertArgsNumberThrowIf(this,1, _args.Arguments);
             Name = cal.GetValue<string>(_args.Arguments[0]);
         }
     }

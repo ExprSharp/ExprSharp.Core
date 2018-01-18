@@ -81,8 +81,8 @@ namespace ExprSharp.Runtime
                     (FunctionArgument _args, EvalContext cal) =>
                     {
                         var args = _args.Arguments;
-                        OperationHelper.AssertArgsNumberThrowIf(1, args);
-                        OperationHelper.AssertCertainValueThrowIf(args);
+                        OperationHelper.AssertArgsNumberThrowIf(Number,1, args);
+                        OperationHelper.AssertCertainValueThrowIf(Number,args);
                         var s = cal.GetValue<string>(args[0]);
                         return new ConcreteValue(new RealNumber(BigDecimal.Parse(s)));
                     },
@@ -94,8 +94,8 @@ namespace ExprSharp.Runtime
                     (FunctionArgument _args, EvalContext cal) =>
                     {
                         var args = _args.Arguments;
-                        OperationHelper.AssertArgsNumberThrowIf(1, args);
-                        OperationHelper.AssertCertainValueThrowIf(args);
+                        OperationHelper.AssertArgsNumberThrowIf(String,1, args);
+                        OperationHelper.AssertCertainValueThrowIf(String, args);
                         var s = cal.GetValue<object>(args[0]);
                         return new ConcreteValue(s.ToString());
                     },
@@ -107,8 +107,8 @@ namespace ExprSharp.Runtime
                     (FunctionArgument _args, EvalContext cal) =>
                     {
                         var args = _args.Arguments;
-                        OperationHelper.AssertArgsNumberThrowIf(1, args);
-                        OperationHelper.AssertCertainValueThrowIf(args);
+                        OperationHelper.AssertArgsNumberThrowIf(Integer,1, args);
+                        OperationHelper.AssertCertainValueThrowIf(Integer,args);
                         var s = cal.GetValue<RealNumber>(args[0]);
                         return new ConcreteValue(new RealNumber(new BigDecimal(s.Value.Integer)));
                     },
@@ -120,8 +120,8 @@ namespace ExprSharp.Runtime
                     (FunctionArgument _args, EvalContext cal) =>
                     {
                         var args = _args.Arguments;
-                        OperationHelper.AssertArgsNumberThrowIf(1, args);
-                        OperationHelper.AssertCertainValueThrowIf(args);
+                        OperationHelper.AssertArgsNumberThrowIf(Decimal,1, args);
+                        OperationHelper.AssertCertainValueThrowIf(Decimal, args);
                         int p = cal.GetValue<int>(args[0]);
                         return new ConcreteValue(new RealNumber(new BigDecimal(0, p)));
                     },
@@ -138,19 +138,20 @@ namespace ExprSharp.Runtime
                 var args = _args.Arguments;
                 if (OperationHelper.AssertArgsNumber(1, args))
                 {
-                    var v = cal.GetValue<CollectionValue>(args[0]) as IEnumerable<CollectionItemValue>;
-                    return new ListValue(v.OrderBy(x => x.Value));
+                    var v = cal.GetValue<IEnumerableValue>(args[0]);
+                    return new iExpr.Exprs.Program.ListValue(v.OrderBy(x => OperationHelper.GetValue(x)));
                 }
                 else if (OperationHelper.AssertArgsNumber(2, args))
                 {
-                    var v = cal.GetValue<CollectionValue>(args[0]) as IEnumerable<CollectionItemValue>;
+                    var v = cal.GetValue<IEnumerableValue>(args[0]);
                     var func = cal.GetValue<FunctionValue>(args[1]);
                     var c = cal.GetChild();
-                    return new ListValue(v.OrderBy(x => func.EvaluateFunc(new FunctionArgument(x),c)));
+                    return new iExpr.Exprs.Program.ListValue(v.OrderBy(x => func.EvaluateFunc(new FunctionArgument(x),c)));
                 }
                 else
                 {
-                    throw new EvaluateException("wrong argument count");
+                    ExceptionHelper.RaiseWrongArgsNumber(Sorted, 2, args?.Length ?? 0);
+                    return default;
                 }
             },
             2
@@ -161,8 +162,8 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(2, args);
-                var v = cal.GetValue<CollectionValue>(args[0]) as IEnumerable<CollectionItemValue>;
+                OperationHelper.AssertArgsNumberThrowIf(Select, 2, args);
+                var v = cal.GetValue<IEnumerableValue>(args[0]);
                 var func = cal.GetValue<FunctionValue>(args[1]);
                 var c = cal.GetChild();
                 return new PreEnumeratorValue(v.Select(x => (IValue)func.EvaluateFunc(new FunctionArgument(x), c)));
@@ -175,8 +176,8 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(2, args);
-                var v = cal.GetValue<CollectionValue>(args[0]) as IEnumerable<CollectionItemValue>;
+                OperationHelper.AssertArgsNumberThrowIf(Where, 2, args);
+                var v = cal.GetValue<IEnumerableValue>(args[0]);
                 var func = cal.GetValue<FunctionValue>(args[1]);
                 var c = cal.GetChild();
                 return new PreEnumeratorValue(v.Where(x => cal.GetValue<bool>(func.EvaluateFunc(new FunctionArgument(x), c))));
@@ -189,9 +190,9 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(3, args);
-                var v1 = cal.GetValue<CollectionValue>(args[0]) as IEnumerable<CollectionItemValue>;
-                var v2 = cal.GetValue<CollectionValue>(args[1]) as IEnumerable<CollectionItemValue>;
+                OperationHelper.AssertArgsNumberThrowIf(Zip,3, args);
+                var v1 = cal.GetValue<IEnumerableValue>(args[0]);
+                var v2 = cal.GetValue<IEnumerableValue>(args[1]);
                 var func = cal.GetValue<FunctionValue>(args[2]);
                 var c = cal.GetChild();
                 return new PreEnumeratorValue(v1.Zip(v2, (x, y) => (IValue)func.EvaluateFunc(new FunctionArgument(x, y), c)));
@@ -204,8 +205,8 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(2, args);
-                var v = (cal.GetValue<CollectionValue>(args[0]) as IEnumerable<CollectionItemValue>).ToArray();
+                OperationHelper.AssertArgsNumberThrowIf(Reduce,2, args);
+                var v = cal.GetValue<IEnumerableValue>(args[0]).ToArray();
                 var func = cal.GetValue<FunctionValue>(args[1]);
                 var c = cal.GetChild();
                 if (v.Length == 0) return func.EvaluateFunc(new FunctionArgument(), c);
@@ -224,7 +225,7 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(2, args);
+                OperationHelper.AssertArgsNumberThrowIf(Range,2, args);
                 int[] l = cal.GetValue<int>(args);
                 return new PreEnumeratorValue(Enumerable.Range(l[0], l[1] - l[0] + 1).Select(x => new ConcreteValue( new RealNumber(new BigDecimal(x)))));
             },
@@ -236,7 +237,7 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(1, args);
+                OperationHelper.AssertArgsNumberThrowIf(Import,1, args);
                 var vs = cal.GetValue<string>(args[0]);
                 if (File.Exists(vs))
                 {
@@ -266,7 +267,7 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(3, args);
+                OperationHelper.AssertArgsNumberThrowIf(Module,3, args);
                 //if(args.Length==0) throw new EvaluateException("wrong argument count");
                 var vs = cal.GetValue<string>(args);
                 string name = "", author = "", version = "";
@@ -283,13 +284,13 @@ namespace ExprSharp.Runtime
             (FunctionArgument _args, EvalContext cal) =>
             {
                 var args = _args.Arguments;
-                OperationHelper.AssertArgsNumberThrowIf(1, args);
+                OperationHelper.AssertArgsNumberThrowIf(View,1, args);
                 //if(args.Length==0) throw new EvaluateException("wrong argument count");
-                var vs = cal.GetValue<ClassValue>(args[0]);
+                var vs = cal.GetValue<IAccessibleValue>(args[0]);
                 var res = new DictionaryValue();
-                foreach(var v in vs)
+                foreach(var v in vs.GetMembers())
                 {
-                    res.Add(new ConcreteValue(v.Key), v.Value);
+                    res.Add(new ConcreteValue(v.Key), (IValue)v.Value);
                 }
                 return res;
             },

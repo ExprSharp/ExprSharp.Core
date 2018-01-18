@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ExprSharp.Core;
 using iExpr;
 using iExpr.Exceptions;
 using iExpr.Exprs.Core;
@@ -109,7 +110,7 @@ namespace ExprSharp.Runtime
         {
             if (symbol.Value.StartsWith("\""))
             {
-                return new ConcreteValue(symbol.Value.Substring(1, symbol.Value.Length - 2));
+                return new ConcreteValue(new StringValue( symbol.Value.Substring(1, symbol.Value.Length - 2)));
             }
             else return new ConcreteValue(new RealNumber(BigDecimal.Parse(symbol.Value)));
         }

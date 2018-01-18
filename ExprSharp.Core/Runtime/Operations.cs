@@ -1,4 +1,5 @@
-﻿using iExpr;
+﻿using ExprSharp.Core;
+using iExpr;
 using iExpr.Evaluators;
 using iExpr.Exceptions;
 using iExpr.Exprs.Program;
@@ -97,7 +98,7 @@ namespace ExprSharp.Runtime
                         OperationHelper.AssertArgsNumberThrowIf(String,1, args);
                         OperationHelper.AssertCertainValueThrowIf(String, args);
                         var s = cal.GetValue<object>(args[0]);
-                        return new ConcreteValue(s.ToString());
+                        return new ConcreteValue(new StringValue(s.ToString()));
                     },
                     1
                     );

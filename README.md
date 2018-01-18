@@ -5,7 +5,7 @@
 ![](https://img.shields.io/badge/framework-.netstandard2.0-blue.svg)
 ![](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![](https://img.shields.io/badge/iexpr.core-v0.5.3-brightgreen.svg)
-![](http://progressed.io/bar/70?title=done)
+![](http://progressed.io/bar/90?title=done)
 
 + Author: Stardust D.L.
 + Version: 0.1

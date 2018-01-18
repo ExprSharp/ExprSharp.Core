@@ -152,8 +152,10 @@ namespace ExprSharp
         }
 
         [ClassField(Name = "e", IsReadOnly = true)]
-        public static ReadOnlyConcreteValue E { get; } = new ReadOnlyConcreteValue(System.Math.E);
+        public static ReadOnlyConcreteValue E { get; } = new ReadOnlyConcreteValue(new number(iExpr.Extensions.Math.Numerics.BigDecimal.Parse(
+            "2.7182818284590452353602874713526624977572470936999595749669676277240766303535475945713821785251664274")));
         [ClassField(Name = "pi", IsReadOnly = true)]
-        public static ReadOnlyConcreteValue PI { get; } = new ReadOnlyConcreteValue(System.Math.PI);
+        public static ReadOnlyConcreteValue PI { get; } = new ReadOnlyConcreteValue(new number(iExpr.Extensions.Math.Numerics.BigDecimal.Parse(
+            "3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982")));
     }
 }

@@ -58,35 +58,35 @@ namespace ExprSharp
             Value = value;
         }
 
-        public object Add(object right)
+        object IAdditive.Add(object right)
         {
             if (!(right is RealNumber)) throw new ArgumentException("Not a real number",nameof(right));
             var v = (RealNumber)right;
-            return new RealNumber(Value + v.Value);
+            return this + v;
         }
 
-        public object Divide(object right)
+        object IDivisible.Divide(object right)
         {
             if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
-            return new RealNumber(Value/v.Value);
+            return this / v;
         }
 
-        public object Mod(object right)
+        object IMouldable.Mod(object right)
         {
             if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
-            return new RealNumber(Value % v.Value);
+            return this % v;
         }
 
-        public object Multiply(object right)
+        object IMultiplicable.Multiply(object right)
         {
             if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
-            return new RealNumber(Value*v.Value);
+            return this * v;
         }
 
-        public object Pow(object right)
+        object IPowerable.Pow(object right)
         {
             if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
@@ -94,14 +94,14 @@ namespace ExprSharp
             return new RealNumber(BigDecimal.Pow(Value,(BigInteger)v.Value));
         }
 
-        public object Subtract(object right)
+        object ISubtractive.Subtract(object right)
         {
             if (!(right is RealNumber)) throw new ArgumentException("Not a real number", nameof(right));
             var v = (RealNumber)right;
-            return new RealNumber(Value-v.Value);
+            return this - v;
         }
 
-        public object Negtive()
+        object ISubtractive.Negtive()
         {
             return -this;
         }
@@ -118,12 +118,12 @@ namespace ExprSharp
 
         public static RealNumber operator +(RealNumber left, RealNumber right)
         {
-            return (RealNumber)left.Add(right);
+            return new RealNumber(left.Value + right.Value);
         }
 
         public static RealNumber operator -(RealNumber left, RealNumber right)
         {
-            return (RealNumber)left.Subtract(right);
+            return new RealNumber(left.Value - right.Value);
         }
 
         public static RealNumber operator -(RealNumber left)
@@ -133,17 +133,17 @@ namespace ExprSharp
 
         public static RealNumber operator *(RealNumber left, RealNumber right)
         {
-            return (RealNumber)left.Multiply(right);
+            return new RealNumber(left.Value * right.Value);
         }
 
         public static RealNumber operator /(RealNumber dividend, RealNumber divisor)
         {
-            return (RealNumber)dividend.Divide(divisor);
+            return new RealNumber(dividend.Value / divisor.Value);
         }
 
         public static RealNumber operator %(RealNumber dividend, RealNumber divisor)
         {
-            return (RealNumber)dividend.Mod(divisor);
+            return new RealNumber(dividend.Value % divisor.Value);
         }
 
         public static bool operator <(RealNumber left, RealNumber right)

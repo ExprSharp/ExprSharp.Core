@@ -146,8 +146,8 @@ namespace ExprSharp.Runtime
                 {
                     var v = cal.GetValue<IEnumerableValue>(args[0]);
                     var func = cal.GetValue<FunctionValue>(args[1]);
-                    var c = cal.GetChild();
-                    return new iExpr.Exprs.Program.ListValue(v.OrderBy(x => func.EvaluateFunc(new FunctionArgument(x),c)));
+                    //var c = cal.GetChild();
+                    return new iExpr.Exprs.Program.ListValue(v.OrderBy(x => func.EvaluateFunc(new FunctionArgument(x),cal)));
                 }
                 else
                 {
@@ -166,8 +166,8 @@ namespace ExprSharp.Runtime
                 OperationHelper.AssertArgsNumberThrowIf(Select, 2, args);
                 var v = cal.GetValue<IEnumerableValue>(args[0]);
                 var func = cal.GetValue<FunctionValue>(args[1]);
-                var c = cal.GetChild();
-                return new PreEnumeratorValue(v.Select(x => (IValue)func.EvaluateFunc(new FunctionArgument(x), c)));
+                //var c = cal.GetChild();
+                return new PreEnumeratorValue(v.Select(x => (IValue)func.EvaluateFunc(new FunctionArgument(x), cal)));
             },
             2
             );
@@ -180,8 +180,8 @@ namespace ExprSharp.Runtime
                 OperationHelper.AssertArgsNumberThrowIf(Where, 2, args);
                 var v = cal.GetValue<IEnumerableValue>(args[0]);
                 var func = cal.GetValue<FunctionValue>(args[1]);
-                var c = cal.GetChild();
-                return new PreEnumeratorValue(v.Where(x => cal.GetValue<bool>(func.EvaluateFunc(new FunctionArgument(x), c))));
+                //var c = cal.GetChild();
+                return new PreEnumeratorValue(v.Where(x => cal.GetValue<bool>(func.EvaluateFunc(new FunctionArgument(x), cal))));
             },
             2
             );
@@ -195,8 +195,8 @@ namespace ExprSharp.Runtime
                 var v1 = cal.GetValue<IEnumerableValue>(args[0]);
                 var v2 = cal.GetValue<IEnumerableValue>(args[1]);
                 var func = cal.GetValue<FunctionValue>(args[2]);
-                var c = cal.GetChild();
-                return new PreEnumeratorValue(v1.Zip(v2, (x, y) => (IValue)func.EvaluateFunc(new FunctionArgument(x, y), c)));
+                //var c = cal.GetChild();
+                return new PreEnumeratorValue(v1.Zip(v2, (x, y) => (IValue)func.EvaluateFunc(new FunctionArgument(x, y), cal)));
             },
             3
             );
@@ -209,12 +209,12 @@ namespace ExprSharp.Runtime
                 OperationHelper.AssertArgsNumberThrowIf(Reduce,2, args);
                 var v = cal.GetValue<IEnumerableValue>(args[0]).ToArray();
                 var func = cal.GetValue<FunctionValue>(args[1]);
-                var c = cal.GetChild();
-                if (v.Length == 0) return func.EvaluateFunc(new FunctionArgument(), c);
+                //var c = cal.GetChild();
+                if (v.Length == 0) return func.EvaluateFunc(new FunctionArgument(), cal);
                 IExpr last = v[0];
                 for(int i = 1; i < v.Length; i++)
                 {
-                    last = func.EvaluateFunc(new FunctionArgument(last, v[i]), c);
+                    last = func.EvaluateFunc(new FunctionArgument(last, v[i]), cal);
                 }
                 return last;
             },
@@ -248,9 +248,7 @@ namespace ExprSharp.Runtime
                         var c = cal.GetChild();
                         var builder = new ExprBuilder(new EParse());
                         var m = cal.GetValue<ModuleValue>(c.Evaluate(builder.GetExpr(mod)));
-                        var baseContext = cal;
-                        while (baseContext.Parent != null) baseContext = baseContext.Parent;
-                        baseContext.Variables.Set(m.Name, m);
+                        cal.BasicVariables.Set(m.Name, m);
                         return new ConcreteValue(true);
                     }
                     catch
@@ -277,7 +275,7 @@ namespace ExprSharp.Runtime
                 version = vs[2];
                 return new ModuleBuildFunctionValue(new ModuleValue(name, author, version, cal));
             },
-            3
+            3,false, new EvalContextStartupInfo(true, true)
             );
 
         public static PreFunctionValue View { get; } = new PreFunctionValue(

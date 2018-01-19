@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="iExpr.Core" Version="0.5.3.8" />
+    <PackageReference Include="iExpr.Core" Version="0.5.3.21" />
     <PackageReference Include="iExpr.Extensions.Math.Numerics" Version="0.1.0.3" />
   </ItemGroup>
 

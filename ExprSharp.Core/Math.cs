@@ -9,7 +9,7 @@ using number = ExprSharp.RealNumber;
 namespace ExprSharp
 {
     [CanClassValue(Name = "math")]
-    public class Math
+    public static class Math
     {
         [ClassMethod(Name = "ceil",ArgumentCount =1,IsReadOnly =true)]
         public static number Ceil(FunctionArgument _args, EvalContext cal)

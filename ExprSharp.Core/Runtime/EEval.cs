@@ -21,7 +21,7 @@ namespace ExprSharp.Runtime
 
         public override EvalContext GetChild(VariableFindMode mode = VariableFindMode.UpAll)
         {
-            return new EEContext() { Evaluator = Evaluator, CancelToken = CancelToken, Parent = this };
+            return new EEContext() { Evaluator = Evaluator, CancelToken = CancelToken, Parent = this , BasicVariables = BasicVariables };
         }
 
         public static T ConvertVal<T>(object obj)
@@ -32,47 +32,54 @@ namespace ExprSharp.Runtime
         protected override T ConvertValue<T>(object obj)
         {
             //if(obj==null)Console.WriteLine("!!");
-            switch (obj)
+            try
             {
-                case double d:
-                case int i:
-                case bool b:
-                    try
-                    {
-                        return base.ConvertValue<T>(obj);
-                    }
-                    catch
-                    {
-                        double v = Convert.ToDouble(obj);
-                        return (T)(object)(new RealNumber(v));
-                    }
-                case RealNumber r:
-                    try
-                    {
-                        var d = (double)r;
-                        return (T)Convert.ChangeType(d, typeof(T));
-                    }
-                    catch//(Exception ex)
-                    {
-                        return (T)(object)r;
-                    }
-                case string s:
-                    return (T)(object)s;
-                case StringValue s:
-                    {
-                        if (typeof(T) ==typeof(string))
-                            return (T)(object)s.Value;
-                        else return (T)(object)s;
-                    }
-            }
-            /*if(exp.Value is RealNumber)
-            {
-                try
+                switch (obj)
                 {
-                    return (T)Convert.ChangeType((double)((RealNumber)exp.Value),typeof(T));
+                    case double d:
+                    case int i:
+                    case bool b:
+                        try
+                        {
+                            return base.ConvertValue<T>(obj);
+                        }
+                        catch
+                        {
+                            double v = Convert.ToDouble(obj);
+                            return (T)(object)(new RealNumber(v));
+                        }
+                    case RealNumber r:
+                        try
+                        {
+                            var d = (double)r;
+                            return (T)Convert.ChangeType(d, typeof(T));
+                        }
+                        catch//(Exception ex)
+                        {
+                            return (T)(object)r;
+                        }
+                    case string s:
+                        return (T)(object)s;
+                    case StringValue s:
+                        {
+                            if (typeof(T) == typeof(string))
+                                return (T)(object)s.Value;
+                            else return (T)(object)s;
+                        }
                 }
-                catch { }
-            }*/
+                /*if(exp.Value is RealNumber)
+                {
+                    try
+                    {
+                        return (T)Convert.ChangeType((double)((RealNumber)exp.Value),typeof(T));
+                    }
+                    catch { }
+                }*/
+            }
+            catch
+            {
+                
+            }
             return base.ConvertValue<T>(obj);
         }
 
@@ -97,7 +104,7 @@ namespace ExprSharp.Runtime
         {
             var res = EEContext.Create(cancel ?? new System.Threading.CancellationTokenSource());
             res.Evaluator = Evaluator;
-            res.Variables = Variables;
+            res.BasicVariables = Variables;
             return res;
         }
     }

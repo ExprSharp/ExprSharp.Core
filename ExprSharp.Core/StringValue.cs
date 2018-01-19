@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ExprSharp.Core
 {
-    public struct StringValue : IAdditive, IMultiplicable,IEquatable<StringValue>,IEquatable<string>
+    public struct StringValue : IAdditive, IMultiplicable,IEquatable<StringValue>,IEquatable<string>,IComparable<StringValue>,IComparable<string>,IComparable
     {
         public static implicit operator StringValue(string value)
         {
@@ -82,6 +82,22 @@ namespace ExprSharp.Core
             hashCode = hashCode * -1521134295 + base.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Value);
             return hashCode;
+        }
+
+        public int CompareTo(string other)
+        {
+            return Value.CompareTo(other);
+        }
+
+        public int CompareTo(StringValue other)
+        {
+            return Value.CompareTo(other.Value);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (!(obj is StringValue)) throw new ArgumentException("Not a string value", nameof(obj));
+            return CompareTo((StringValue)obj);
         }
     }
 }

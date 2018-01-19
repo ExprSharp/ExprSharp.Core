@@ -60,9 +60,13 @@ namespace ExprSharp.Runtime
             Constants.Add(new ConstantToken("False", BuiltinValues.False));
             Constants.Add(new ConstantToken("null", BuiltinValues.Null));
             Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Gift)),false);
+            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Stack)), false);
+            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Queue)), false);
             //Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(iExpr.Exprs.Program.DictionaryValue)), false);
             Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Math)),true);
+            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.StringStatic)), true);
             Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.Random)),true);
+            Constants.AddClassValue(iExpr.Helpers.ClassValueBuilder.BuildStaticAndCtor(typeof(ExprSharp.FileStatic)), true);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.Length);
             Constants.AddFunction(iExpr.Exprs.Core.CoreOperations.HasVariable);
             Constants.AddFunction(iExpr.Exprs.Program.CoreOperations.List);
